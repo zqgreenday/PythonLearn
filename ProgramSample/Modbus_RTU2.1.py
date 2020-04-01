@@ -15,7 +15,7 @@ class Modbus_Rtu():
         # 通讯地址
         self.mbId = convert(entrydata9)
         self.mbComPort = getdata(comboxlist1, comvalue1)
-        self.baudrate = int(getdata(comboxlist2, comvalue2))
+        self.baudrate = getdata(comboxlist2, comvalue2)
         self.databit = int(getdata(comboxlist3, comvalue3))
         self.parity = getdata(comboxlist4, comvalue4)
         self.stopbit = int(getdata(comboxlist5, comvalue5))
@@ -25,6 +25,8 @@ class Modbus_Rtu():
                                     parity=self.parity, stopbits=self.stopbit)
             self.master = modbus_rtu.RtuMaster(mb_port)
             self.master.set_timeout(self.mbTimeout / 1000.0)
+            button6["state"] = "disabled"
+            button7["state"] = "normal"
         except Exception as e:
             tkinter.messagebox.showerror(title='Error', message='Modbus Error: ' + str(e))
 
@@ -93,13 +95,14 @@ class Modbus_Rtu():
             wsc = self.master.execute(self.mbId, cst.READ_COILS, addr, 1)
             label = tkinter.Label(frame1, width=5, bd=2, relief="sunken", text=str(wsc[0]))
             label.grid(row=1, column=1)
-
         except Exception as e:
             tkinter.messagebox.showerror(title='Error', message='Modbus Error: ' + str(e))
 
     def mb_port_close(self):
         try:
             self.master._do_close()
+            button7["state"] = "disabled"
+            button6["state"] = "normal"
         except Exception as e:
             tkinter.messagebox.showerror(title='Error', message='Modbus Error: ' + str(e))
 
@@ -107,6 +110,7 @@ if __name__ == '__main__':
 
     root = tkinter.Tk()  # 生成root主窗口
     root.title('Modbus Rtu with XinJe')
+    root.resizable(0, 0)
     root.geometry('500x280')
 
     frame1 = tkinter.Frame(root, bd=3, relief="ridge")
@@ -125,6 +129,7 @@ if __name__ == '__main__':
         except Exception as e:
             tkinter.messagebox.showerror(title='Error', message='Error: ' + str(e))
         return data
+
     def getdata(comboxlist,comvalue):
         comvalue.set(comboxlist.get())
         data = comboxlist.get()
@@ -145,16 +150,16 @@ if __name__ == '__main__':
     comboxlist1.grid(row=0, column=3)
     label11 = tkinter.Label(frame4, text='BandRate：')
     label11.grid(row=0, column=4)
-    comvalue2 = tkinter.StringVar()
+    comvalue2 = tkinter.IntVar()
     comboxlist2 = ttk.Combobox(frame4, width=5, textvariable=comvalue2)
-    comboxlist2["values"] = ("2400", "4800", "9600", "19200", "38400")
+    comboxlist2["values"] = (2400, 4800, 9600, 19200, 38400)
     comboxlist2.current(3)
     comboxlist2.grid(row=0, column=5)
     label11 = tkinter.Label(frame4, text='DataBit：')
     label11.grid(row=0, column=6)
-    comvalue3 = tkinter.StringVar()
+    comvalue3 = tkinter.IntVar()
     comboxlist3 = ttk.Combobox(frame4, width=5, textvariable=comvalue3)
-    comboxlist3["values"] = ("5", "6", "7", "8")
+    comboxlist3["values"] = (5, 6, 7, 8)
     comboxlist3.current(3)
     comboxlist3.grid(row=0, column=7)
     label12 = tkinter.Label(frame4, text='Parity：')
@@ -166,9 +171,9 @@ if __name__ == '__main__':
     comboxlist4.grid(row=1, column=3)
     label13 = tkinter.Label(frame4, text='StopBit：')
     label13.grid(row=1, column=4)
-    comvalue5 = tkinter.StringVar()
+    comvalue5 = tkinter.IntVar()
     comboxlist5 = ttk.Combobox(frame4, width=5, textvariable=comvalue5)
-    comboxlist5["values"] = ("1", "2")
+    comboxlist5["values"] = (1, 2)
     comboxlist5.current(0)
     comboxlist5.grid(row=1, column=5)
     label14 = tkinter.Label(frame4, text='TimeOut：')
@@ -184,8 +189,8 @@ if __name__ == '__main__':
     button6 = tkinter.Button(frame4, text='打开串口', command=modbusrtu.mb_port_open)
     button6.grid(row=0, column=8, padx=5, pady=1)
 
-    button6 = tkinter.Button(frame4, text='关闭串口', command=modbusrtu.mb_port_close)
-    button6.grid(row=1, column=8, padx=5, pady=1)
+    button7 = tkinter.Button(frame4, text='关闭串口', command=modbusrtu.mb_port_close)
+    button7.grid(row=1, column=8, padx=5, pady=1)
 
     # Write Single Coil功能码测试
     label7 = tkinter.Label(frame1, text='线圈写入地址：')
@@ -250,6 +255,5 @@ if __name__ == '__main__':
     button5 = tkinter.Button(root, text='Quit', command=root.quit)
     button5.place(x=6, y=255, width=50)
 
-    root.update()
     root.mainloop()
 
