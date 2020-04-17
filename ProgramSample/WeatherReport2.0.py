@@ -66,7 +66,7 @@ class MyApplication(tk.Tk):
         return weatherdata
 
     def weather_data(self):
-        try:
+        #try:
             self.weatherdata = self.dataupdate(self.city_entry)
             self.city_lable['text'] = "城市："+self.weatherdata[1]["city"]
             RealTimeWeather(self, text="实时温度", labelanchor="nw", font=("微软雅黑", 15),
@@ -77,9 +77,9 @@ class MyApplication(tk.Tk):
 
             TomorrowWeather(self, text="明日天气", labelanchor="nw", font=("微软雅黑", 15),
                             background='#34ebb4').place(x=532, y=80, height=200, width=260)
-        except:
-            tkinter.messagebox.showerror(title='Error', message='没有查到' + self.city_entry.get()
-                                                                +'的天气数据，请检查城市名称或更换城市')
+        #except:
+        #    tkinter.messagebox.showerror(title='Error', message='没有查到' + self.city_entry.get()
+        #                                                        +'的天气数据，请检查城市名称或更换城市')
 
     def everydaysoup(self):
         EveryDaySoup(self, text="每日鸡汤", labelanchor="nw", font=("微软雅黑", 15),
