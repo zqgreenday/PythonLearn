@@ -26,7 +26,7 @@ def get_iciba_everyday_chicken_soup():
 class MyApplication(tk.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.title("Weather Report    Designed By ZqGreenday")
+        self.title("Weather Report V1.0   Designed By ZqGreenday")
         self.geometry("800x520")
         self.resizable(width=False, height=False)
         self.configure(background='#77eb34')

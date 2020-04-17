@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import ttk
 import tkinter.messagebox
 import time
+import re
 
 # 爬取天气预报信息
 def get_city_everyday_weather(city_name):
@@ -30,7 +31,7 @@ def get_iciba_everyday_chicken_soup():
 class MyApplication(tk.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.title("Weather Report    Designed By ZqGreenday")
+        self.title("Weather Report V1.1   Designed By ZqGreenday")
         self.geometry("800x520")
         self.resizable(width=False, height=False)
         self.configure(background='#77eb34')
@@ -53,7 +54,7 @@ class MyApplication(tk.Tk):
         self.city_entry.insert(0, '淄博')
         self.city_entry.place(x=55, y=5)
         self.city_button = ttk.Button(self, text='确定', width=10, command=self.weatherdata)
-        self.city_button.place(x=60, y=42)
+        self.city_button.place(x=60, y=36)
         self.city_lable= ttk.Label(self, text="城市：淄博", font=("微软雅黑", 12),
                                    anchor='center', background='#77eb34')
         self.city_lable.place(x=655, y=5)
@@ -125,6 +126,7 @@ class TodayWeather(tk.LabelFrame):
         self.type = self.todayweatherdata['type']
         self.fx = self.todayweatherdata['fengxiang']
         self.fl = self.todayweatherdata['fengli']
+        self.fl = re.sub('[]!CDATA[]', '', self.fl)
         #self.notice = self.todayweatherdata['notice']
 
         self.type_label = ttk.Label(self, text="天气状况: " + str(self.type), font=("微软雅黑", 10),
@@ -158,6 +160,7 @@ class TomorrowWeather(tk.LabelFrame):
         self.type = self.tomweatherdata['type']
         self.fx = self.tomweatherdata['fengxiang']
         self.fl = self.tomweatherdata['fengli']
+        self.fl = re.sub('[]!CDATA[]', '', self.fl)
         #self.notice = self.tomweatherdata['notice']
 
         self.type_label = ttk.Label(self, text="天气状况: " + str(self.type), font=("微软雅黑", 10),
