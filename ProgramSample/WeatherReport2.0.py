@@ -69,7 +69,7 @@ class MyApplication(tk.Tk):
         #try:
             self.weatherdata = self.dataupdate(self.city_entry)
             self.city_lable['text'] = "城市："+self.weatherdata[1]["city"]
-            RealTimeWeather(self, text="实时温度", labelanchor="nw", font=("微软雅黑", 15),
+            RealTimeWeather(self, text="实时天气", labelanchor="nw", font=("微软雅黑", 15),
                             background='#34ebb4').place(x=4, y=80, height=200, width=260)
 
             TodayWeather(self, text="今日天气", labelanchor="nw", font=("微软雅黑", 15),
