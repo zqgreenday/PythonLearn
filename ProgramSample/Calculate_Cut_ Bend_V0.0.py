@@ -8,7 +8,8 @@ class Calculate():
     # 初始框的声明
     def __init__(self):
         self.root = Tk()
-        self.root.title('间隔条裁切折弯计算软件V0.0')
+        self.root.title('间隔条裁切折弯计算软件-V0.0')
+        self.root.iconphoto(False, PhotoImage(file='calculator.png'))
         self.root.resizable(0, 0)
         self.creat_widgets()
 
@@ -68,113 +69,117 @@ class Calculate():
     # 间隔条裁切折弯算法程序
     def calculated_value(self):
         global i, j
-        if self.number[self.j] > 0:
-            if self.i == 0:  # 第一组间隔条计算程序
-                self.total_length.append(self.width[self.j] + 200)
-                for s in self.specifications:
-                    if s > (self.width[self.j] + 200) * 2:
-                        self.specification.append(s)
-                        break
-                self.width_length.append(self.width[self.j])
-                self.bend_length.append((self.total_length[self.i] - self.width_length[self.i]) // 2)
-                self.remain_length.append(self.specification[self.i] - self.total_length[self.i])
-                self.warehouse_length[self.i] = self.remain_length[self.i]
-                self.total_length.append((self.length[self.j] - self.bend_length[self.i]) * 2 + self.width[self.j])
-                for s in self.specifications:
-                    if (s - self.total_length[self.i + 1]) >= (self.width[self.j] + 200):
-                        self.specification.append(s)
-                        break
-                self.width_length.append(self.width[self.j])
-                self.bend_length.append((self.total_length[self.i + 1] - self.width_length[self.i + 1]) // 2)
-                self.remain_length.append(self.specification[self.i + 1] - self.total_length[self.i + 1])
-                self.warehouse_length[self.i + 1] = self.remain_length[self.i + 1]
-                self.number[self.j] -= 2
-                self.treeview1.insert('', len(self.total_length) - 2,
-                                 values = (self.total_length[len(self.total_length) - 2], self.width_length[len(self.total_length) - 2],
-                                          self.bend_length[len(self.total_length) - 2], self.specification[len(self.total_length) - 2],
-                                          self.remain_length[len(self.total_length) - 2], self.number[self.j]))
-                self.treeview1.insert('', len(self.total_length) - 1,
-                                 values = (self.total_length[len(self.total_length) - 1], self.width_length[len(self.total_length) - 1],
-                                          self.bend_length[len(self.total_length) - 1], self.specification[len(self.total_length) - 1],
-                                          self.remain_length[len(self.total_length) - 1], self.number[self.j]))
-                self.treeview1.update()
-            else:
-                self.width_length.append(self.width[self.j])
-                for k in range(len(self.warehouse_length)):
-                    if (self.warehouse_length[k] > self.width[self.j] + 160) and (
-                            self.warehouse_length[k] < self.width[self.j] + (self.length[self.j] * 2) - 160):
-                        self.total_length.append(self.warehouse_length[k])
-                        self.warehouse_length[k] = 0
-                        self.remain_length.append(0)
-                        self.specification.append(0)
-                        break
-                else:
+        if bool(self.width and self.length and self.number)==False:
+            tkinter.messagebox.showwarning(title='操作提示', message='请添加窗框型号和生产数量再进行计算！！')
+        else:
+            if self.number[self.j] > 0:
+                if self.i == 0:  # 第一组间隔条计算程序
                     self.total_length.append(self.width[self.j] + 200)
                     for s in self.specifications:
                         if s > (self.width[self.j] + 200) * 2:
                             self.specification.append(s)
                             break
+                    self.width_length.append(self.width[self.j])
+                    self.bend_length.append((self.total_length[self.i] - self.width_length[self.i]) // 2)
                     self.remain_length.append(self.specification[self.i] - self.total_length[self.i])
+                    self.warehouse_length[self.i] = self.remain_length[self.i]
+                    self.total_length.append((self.length[self.j] - self.bend_length[self.i]) * 2 + self.width[self.j])
+                    for s in self.specifications:
+                        if (s - self.total_length[self.i + 1]) >= (self.width[self.j] + 200):
+                            self.specification.append(s)
+                            break
+                    self.width_length.append(self.width[self.j])
+                    self.bend_length.append((self.total_length[self.i + 1] - self.width_length[self.i + 1]) // 2)
+                    self.remain_length.append(self.specification[self.i + 1] - self.total_length[self.i + 1])
+                    self.warehouse_length[self.i + 1] = self.remain_length[self.i + 1]
+                    self.number[self.j] -= 2
+                    self.treeview1.insert('', len(self.total_length) - 2,
+                                     values = (self.total_length[len(self.total_length) - 2], self.width_length[len(self.total_length) - 2],
+                                              self.bend_length[len(self.total_length) - 2], self.specification[len(self.total_length) - 2],
+                                              self.remain_length[len(self.total_length) - 2], self.number[self.j]))
+                    self.treeview1.insert('', len(self.total_length) - 1,
+                                     values = (self.total_length[len(self.total_length) - 1], self.width_length[len(self.total_length) - 1],
+                                              self.bend_length[len(self.total_length) - 1], self.specification[len(self.total_length) - 1],
+                                              self.remain_length[len(self.total_length) - 1], self.number[self.j]))
+                    self.treeview1.update()
+                else:
+                    self.width_length.append(self.width[self.j])
+                    for k in range(len(self.warehouse_length)):
+                        if (self.warehouse_length[k] > self.width[self.j] + 160) and (
+                                self.warehouse_length[k] < self.width[self.j] + (self.length[self.j] * 2) - 160):
+                            self.total_length.append(self.warehouse_length[k])
+                            self.warehouse_length[k] = 0
+                            self.remain_length.append(0)
+                            self.specification.append(0)
+                            break
+                    else:
+                        self.total_length.append(self.width[self.j] + 200)
+                        for s in self.specifications:
+                            if s > (self.width[self.j] + 200) * 2:
+                                self.specification.append(s)
+                                break
+                        self.remain_length.append(self.specification[self.i] - self.total_length[self.i])
+                        for k in range(len(self.warehouse_length)):
+                            if self.warehouse_length[k] == 0:
+                                self.warehouse_length[k] = self.remain_length[i]
+                                break
+                    self.bend_length.append((self.total_length[self.i] - self.width_length[self.i]) // 2)
+                    self.treeview1.insert('', len(self.total_length) - 1,
+                                     values = (self.total_length[len(self.total_length) - 1], self.width_length[len(self.total_length) - 1],
+                                             self.bend_length[len(self.total_length) - 1], self.specification[len(self.total_length) - 1],
+                                             self.remain_length[len(self.total_length) - 1], self.number[self.j]))
+                    self.treeview1.update()
+                    self.width_length.append(self.width[self.j])
+                    self.total_length.append((self.length[self.j] - self.bend_length[self.i]) * 2 + self.width[self.j])
+                    self.bend_length.append((self.total_length[self.i + 1] - self.width_length[self.i + 1]) // 2)
+                    for s in self.specifications:
+                        if (s - self.total_length[self.i + 1]) >= (self.width[self.j] + 200):
+                            self.specification.append(s)
+                            break
+                    self.remain_length.append(self.specification[self.i + 1] - self.total_length[self.i + 1])
                     for k in range(len(self.warehouse_length)):
                         if self.warehouse_length[k] == 0:
-                            self.warehouse_length[k] = self.remain_length[i]
+                            self.warehouse_length[k] = self.remain_length[self.i + 1]
                             break
-                self.bend_length.append((self.total_length[self.i] - self.width_length[self.i]) // 2)
-                self.treeview1.insert('', len(self.total_length) - 1,
-                                 values = (self.total_length[len(self.total_length) - 1], self.width_length[len(self.total_length) - 1],
-                                         self.bend_length[len(self.total_length) - 1], self.specification[len(self.total_length) - 1],
-                                         self.remain_length[len(self.total_length) - 1], self.number[self.j]))
-                self.treeview1.update()
-                self.width_length.append(self.width[self.j])
-                self.total_length.append((self.length[self.j] - self.bend_length[self.i]) * 2 + self.width[self.j])
-                self.bend_length.append((self.total_length[self.i + 1] - self.width_length[self.i + 1]) // 2)
-                for s in self.specifications:
-                    if (s - self.total_length[self.i + 1]) >= (self.width[self.j] + 200):
-                        self.specification.append(s)
-                        break
-                self.remain_length.append(self.specification[self.i + 1] - self.total_length[self.i + 1])
-                for k in range(len(self.warehouse_length)):
-                    if self.warehouse_length[k] == 0:
-                        self.warehouse_length[k] = self.remain_length[self.i + 1]
-                        break
-                self.number[self.j] -= 1
-                if self.number[self.j] == 0:
-                    self.state[self.j] = ('完成')
-                self.k += len(self.width)
-                for _ in map(self.treeview.delete, self.treeview.get_children("")):
+                    self.number[self.j] -= 1
+                    if self.number[self.j] == 0:
+                        self.state[self.j] = ('完成')
+                    self.k += len(self.width)
+                    for _ in map(self.treeview.delete, self.treeview.get_children("")):
+                        pass
+                    for n in range(len(self.width)):  # 写入数据
+                        self.treeview.insert('', n, values=(self.width[n], self.length[n], self.number[n], self.state[n]))
+                    print('k1=', self.k)
+
+                    self.treeview1.insert('', len(self.total_length) - 1,
+                                     values = (self.total_length[len(self.total_length) - 1], self.width_length[len(self.total_length) - 1],
+                                             self.bend_length[len(self.total_length) - 1], self.specification[len(self.total_length) - 1],
+                                             self.remain_length[len(self.total_length) - 1], self.number[self.j]))
+                    self.treeview1.update()
+
+                for _ in map(self.treeview2.delete, self.treeview2.get_children("")):
                     pass
-                for n in range(len(self.width)):  # 写入数据
-                    self.treeview.insert('', n, values=(self.width[n], self.length[n], self.number[n], self.state[n]))
-                print('k1=', self.k)
-
-                self.treeview1.insert('', len(self.total_length) - 1,
-                                 values = (self.total_length[len(self.total_length) - 1], self.width_length[len(self.total_length) - 1],
-                                         self.bend_length[len(self.total_length) - 1], self.specification[len(self.total_length) - 1],
-                                         self.remain_length[len(self.total_length) - 1], self.number[self.j]))
-                self.treeview1.update()
-
-            for _ in map(self.treeview2.delete, self.treeview2.get_children("")):
-                pass
-            for n in range(min(len(self.warehouse_no), len(self.warehouse_length))):  # 写入数据
-                self.treeview2.insert('', n, values=(self.warehouse_no[n], self.warehouse_length[n]))
-            # 将计算数据显示在文本框中
-            self.scr.config(state=NORMAL)
-            self.scr.insert(INSERT, '********************************************************************************\n\n' +
-                       f"第{self.i + 1}根间隔条，总长{self.total_length[self.i]}mm，全边长{self.width_length[self.i]}mm，折边长{self.bend_length[self.i]}mm，"
-                       f"余长{self.remain_length[self.i]}mm\n第{self.i + 2}根间隔条，总长{self.total_length[self.i + 1]}mm，全边长{self.width_length[self.i + 1]}mm，"
-                       f"折边长{self.bend_length[self.i + 1]}mm，余长{self.remain_length[self.i + 1]}mm\n\n" +
-                       '********************************************************************************\n')
-            self.scr.config(state=DISABLED)
-            self.i += 2
-            print(self.total_length, self.width_length, self.bend_length, self.specification, self.remain_length,
-                  self.number[self.j], self.i)
-        else:
-            if self.j < len(self.number)-1:
-                self.j += 1
-                self.calculated_value()
+                for n in range(min(len(self.warehouse_no), len(self.warehouse_length))):  # 写入数据
+                    self.treeview2.insert('', n, values=(self.warehouse_no[n], self.warehouse_length[n]))
+                # 将计算数据显示在文本框中
+                self.scr.config(state=NORMAL)
+                self.scr.insert(INSERT, '********************************************************************************\n\n' +
+                           f"第{self.i + 1}根间隔条，总长{self.total_length[self.i]}mm，全边长{self.width_length[self.i]}mm，折边长{self.bend_length[self.i]}mm，"
+                           f"余长{self.remain_length[self.i]}mm\n第{self.i + 2}根间隔条，总长{self.total_length[self.i + 1]}mm，全边长{self.width_length[self.i + 1]}mm，"
+                           f"折边长{self.bend_length[self.i + 1]}mm，余长{self.remain_length[self.i + 1]}mm\n\n" +
+                           '********************************************************************************\n')
+                self.scr.config(state=DISABLED)
+                self.i += 2
+                print(self.total_length, self.width_length, self.bend_length, self.specification, self.remain_length,
+                      self.number[self.j], self.i)
             else:
-                tkinter.messagebox.showinfo(title='完成提示', message='计算完成，请添加新的生产数据')
+                if self.j < len(self.number)-1:
+                    self.j += 1
+                    self.calculated_value()
+                else:
+                    tkinter.messagebox.showinfo(title='完成提示', message='计算完成，请添加新的窗框型号和数量！！')
 
+    # 清空表格和文本框数据
     def clear_table(self):
         global i, j, k
         self.k += len(self.width)
