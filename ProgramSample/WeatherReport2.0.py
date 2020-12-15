@@ -7,8 +7,8 @@ import time
 
 # 爬取天气预报信息
 def get_city_everyday_weather(city_name):
-        url = 'http://t.weather.sojson.com/api/weather/city/'  # 淄博天气预报地址
-        with open('city.txt', 'r', encoding='utf-8') as fs:
+        url = 'http://t.weather.itboy.net/api/weather/city/'  # 淄博天气预报地址
+        with open('file/city.txt', 'r', encoding='utf-8') as fs:
             lines = fs.readlines()
             for line in lines:
                 if city_name in line:
@@ -50,6 +50,7 @@ class MyApplication(tk.Tk):
         self.name_lable.place(x=5, y=5)
         self.city_entry = ttk.Entry(self, width=9, font=("微软雅黑", 12))
         self.city_entry.insert(0, '淄博')
+        #self.city_entry.bind('<Double-1>', self.weather_data)
         self.city_entry.place(x=55, y=5)
         self.city_button = ttk.Button(self, text='确定', width=10, command=self.weather_data)
         self.city_button.place(x=60, y=36)
@@ -62,8 +63,8 @@ class MyApplication(tk.Tk):
 
     def dataupdate(self, city_entry):
         name = city_entry.get().strip()
-        weatherdata = get_city_everyday_weather(name)
-        return weatherdata
+        weatherdata1 = get_city_everyday_weather(name)
+        return weatherdata1
 
     def weather_data(self):
         try:
